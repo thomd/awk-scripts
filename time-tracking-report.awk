@@ -31,6 +31,10 @@
 #
 #     awk -f timekeeping.awk time-tracking.txt
 #
+#   for sorting by date, prefix output with unix-timestamp (%s) and
+#
+#     awk -f timekeeping.awk time_tracking.txt | sort -r | uniq | cut -d' ' -f2-
+#
 
 /===== [0-9]{4} =====/ {
   year = $2
@@ -75,7 +79,7 @@
 
 /^$/ {
   if (sum > 0 && weekday > 0) {
-    system("echo $(date -j -f '%Y %U %u' '"year " " kw " " weekday"' '+%a, %d.%m.%Y'): " sum " hours")
+    system("echo $(date -j -f '%Y %U %u' '"year " " kw " " weekday"' '+%s %a, %d.%m.%Y'): " sum " hours")
     sum = 0
     weekday = 0
   }
